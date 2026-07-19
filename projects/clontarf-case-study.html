@@ -193,9 +193,9 @@
   <div class="meta-bar">
     <div><strong>Sector</strong>Public transport operations</div>
     <div><strong>Role simulated</strong>Business Systems Analyst</div>
-    <div><strong>Artefacts</strong>Process Map · BRD · User stories · Acceptance Criteria· Business Rules· Data Dictionary. SQL · Power BI</div>
-    <div><strong>Tools</strong>SAP (data source) · SQL · Power BI · BPMN</div>
-  </div>
+    <div><strong>Artefacts</strong>Process Map · BRD · User Stories · Acceptance Criteria · Business Rules · Data Dictionary · SQL · Power BI</div>
+<div><strong>Tools</strong>SAP (operational record retrieval) · Mobile Statistics (KPI reporting) · SQL · Power BI · BPMN</div>
+</div>
   <div class="disclaimer">
     <strong style="font-weight:600;">Note on scope:</strong> this case study is a realistic, self-directed
     project built to demonstrate BSA methodology. The scenario is modelled on operational patterns I
@@ -248,10 +248,10 @@
       </p>
       <p>
         Operational performance information exists across multiple business functions.
-	Route punctuality data is monitored through operational KPI reporting,
-	ticketing device performance is reviewed through SAP and Qlik reporting,
-	and customer complaints are managed through separate investigation workflows
-	with strict SLA requirements.
+         Route punctuality data is monitored through Mobile Statistics KPI reporting,
+         ticketing device performance is reviewed through SAP and Qlik reporting,
+        and customer complaints are supported by operational investigations using SAP
+       service records and separate complaint-management workflows with strict SLA         requirements.
       </p>
       <p>
      	Because these processes are reviewed independently,
@@ -289,15 +289,15 @@
 	</div>
         <div class="stake-card">
           <div class="role">Operations / Scheduling Manager</div>
-          <div class="interest">Owns the SAP punctuality KPI; needs complaint data that can be filtered to the same route and trip granularity as SAP.</div>
-        </div>
+<div class="interest">Responsible for punctuality KPI reporting through Mobile Statistics and requires complaint data that can be analysed at the same route and trip level. </div>
+</div>
         <div class="stake-card">
           <div class="role">Duty Managers</div>
           <div class="interest">Act on service issues day-to-day; need to see complaint and KPI data together, not two weeks later in a meeting.</div>
         </div>
         <div class="stake-card">
           <div class="role">IT / Systems Support</div>
-          <div class="interest">Maintains the SAP extract and any new reporting layer; needs a solution that doesn't require a change to core SAP configuration.</div>
+          <div class="interest">Maintains operational data extracts and any new reporting layer; needs a solution that doesn't require changes to core operational systems.</div>
         </div>
         <div class="stake-card">
           <div class="role">Senior Management</div>
@@ -323,10 +323,15 @@
           <div class="flow-step-n">3</div>
           <div class="flow-step-body"><div class="who">Customer Service Officer</div><div class="what">At month end, filters and totals the spreadsheet manually by route to produce a complaint summary.</div></div>
         </div>
-        <div class="flow-row">
-          <div class="flow-step-n">4</div>
-          <div class="flow-step-body"><div class="who">Operations Analyst</div><div class="what">Independently extracts punctuality and cancellation KPIs from SAP for the same period, by route and trip.</div></div>
-        </div>
+<div class="flow-row">
+<div class="flow-step-n">4</div>
+<div class="flow-step-body">
+<div class="who">Operations Analyst</div>
+<div class="what">
+Independently extracts punctuality and cancellation KPIs from Mobile Statistics for the same period, by route and trip.
+</div>
+</div>
+</div>
         <div class="flow-row">
           <div class="flow-step-n">5</div>
           <div class="flow-step-body"><div class="who">Both teams</div><div class="what">Meet monthly to manually compare the two summaries side by side, reconciling discrepancies by discussion rather than shared data.</div></div>
@@ -342,11 +347,11 @@
     <section class="case-section" id="pain-points">
       <h2><span class="step-num">04</span> Pain Points</h2>
       <div class="pain-grid">
-        <div class="pain-card"><div class="p-title">No shared key</div><div class="p-body">Complaints are logged by free-text route name; SAP uses route ID and trip number. The two cannot be joined without manual mapping.</div></div>
+        <div class="pain-card"><div class="p-title">No shared key</div><div class="p-body">Complaints are logged using free-text information, while operational systems use structured route identifiers, trip references, and service dates. The two cannot easily be joined without manual mapping.</div></div>
         <div class="pain-card"><div class="p-title">Inconsistent categorisation</div><div class="p-body">Complaint reason categories are chosen inconsistently between officers, making trend analysis unreliable.</div></div>
         <div class="pain-card"><div class="p-title">Reporting lag</div><div class="p-body">Reconciliation happens once a month, so a developing issue on a route isn't visible to Duty Managers until weeks later.</div></div>
         <div class="pain-card"><div class="p-title">Manual effort</div><div class="p-body">Two officers independently spend a full day each month producing summaries that still need to be reconciled by hand.</div></div>
-        <div class="pain-card"><div class="p-title">Disputed KPI</div><div class="p-body">Unexplained variance between complaint volume and the SAP KPI undermines confidence in the number reported to the Board.</div></div>
+        <div class="pain-card"><div class="p-title">Disputed KPI</div><div class="p-body">Unexplained variance between complaint volume and operational performance KPIs undermines confidence in the numbers reported to management.</div></div>
         <div class="pain-card"><div class="p-title">No audit trail</div><div class="p-body">Spreadsheet edits are untracked, so it's not possible to see who changed a categorisation or when.</div></div>
       </div>
     </section>
@@ -364,8 +369,7 @@
       <p>
         Introduce a lightweight <strong>Complaint Intake Form</strong> that captures route and trip using
         the same reference data SAP uses (route ID, scheduled trip number, date), instead of free text.
-        Complaint records land in a shared database table alongside a nightly SAP punctuality extract,
-        joined on route ID, trip number, and date.
+Complaint records land in a shared database table alongside a nightly operational performance extract sourced from Mobile Statistics. The datasets are joined using route ID, trip number, and service date, creating a unified reporting layer for operational and customer-service analysis.
       </p>
       <p>
         A single Power BI dashboard, refreshed daily, replaces the manual monthly summary — visible to
@@ -412,7 +416,7 @@
           <tr><td class="req-id">FR-01</td><td>The intake form must require route ID, scheduled trip number, and date, selected from validated reference lists rather than free text.</td><td>Must</td></tr>
           <tr><td class="req-id">FR-02</td><td>The intake form must offer a fixed set of complaint reason categories, replacing the current free-text field.</td><td>Must</td></tr>
           <tr><td class="req-id">FR-03</td><td>Complaint records must be stored in a structured table accessible to both Customer Service and Operations.</td><td>Must</td></tr>
-          <tr><td class="req-id">FR-04</td><td>A nightly process must load the SAP punctuality extract into the same reporting database.</td><td>Must</td></tr>
+          <tr><td class="req-id">FR-04</td><td>A nightly process must load operational performance data from Mobile Statistics into the reporting database.</td><td>Must</td></tr>
           <tr><td class="req-id">FR-05</td><td>The dashboard must allow filtering by route, date range, and complaint reason.</td><td>Must</td></tr>
           <tr><td class="req-id">FR-06</td><td>The dashboard must flag routes where complaint volume and punctuality KPI move in conflicting directions.</td><td>Should</td></tr>
           <tr><td class="req-id">FR-07</td><td>Edits to a logged complaint must retain an audit trail of who changed it and when.</td><td>Should</td></tr>
@@ -498,13 +502,21 @@
       <div class="rule"><div class="rule-id">BR-01</div><div class="rule-text">A complaint cannot be submitted without a valid route ID and trip number matched against the current SAP reference list.</div></div>
       <div class="rule"><div class="rule-id">BR-02</div><div class="rule-text">Complaint reason must be selected from the approved category list; "Other" requires a mandatory free-text note capped at 200 characters, reviewed weekly to identify new recurring categories.</div></div>
       <div class="rule"><div class="rule-id">BR-03</div><div class="rule-text">A complaint may only be edited by the officer who logged it or a Team Lead, and every edit is timestamped and attributed.</div></div>
-      <div class="rule"><div class="rule-id">BR-04</div><div class="rule-text">The punctuality KPI for a route is defined as the percentage of scheduled trips departing within 5 minutes of timetable, consistent with the existing SAP definition — the new process does not redefine the KPI, only reconciles it against complaints.</div></div>
+      <div class="rule"><div class="rule-id">BR-04</div><div class="rule-text">The punctuality KPI for a route is defined as the percentage of scheduled trips departing within 5 minutes of timetable, consistent with the existing Mobile Statistics reporting methodology — the new process does not redefine the KPI, only reconciles it against complaints.</div></div>
       <div class="rule"><div class="rule-id">BR-05</div><div class="rule-text">A route is added to the exception list when complaint volume rises more than 20% week-on-week without a corresponding punctuality KPI change of at least 2 percentage points.</div></div>
     </section>
 
     <!-- 11 -->
     <section class="case-section" id="data-dictionary">
       <h2><span class="step-num">11</span> Data Dictionary</h2>
+     <h3>Operational Data Sources</h3>
+<ul>
+<li><strong>SAP:</strong> Used to retrieve operational service records, identify drivers assigned to services, trace vehicle activity, validate Leap Card transactions, and support complaint investigations.</li>
+
+<li><strong>Mobile Statistics:</strong> Used to extract punctuality, cancellation, and route-performance KPIs for operational monitoring and reporting.</li>
+
+<li><strong>Complaint Management Records:</strong> Customer service complaints and investigation outcomes.</li>
+</ul>
       <table>
         <caption>complaint_log</caption>
         <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
@@ -520,10 +532,10 @@
         </tbody>
       </table>
       <table>
-        <caption>sap_punctuality_extract</caption>
+        <caption>operational_performance_extract</caption>
         <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
         <tbody>
-          <tr><td>route_id</td><td>VARCHAR(10)</td><td>SAP route identifier</td></tr>
+          <tr><td>route_id</td><td>VARCHAR(10)</td><td>Operational route identifier used for KPI reporting</td></tr>
           <tr><td>trip_number</td><td>VARCHAR(12)</td><td>Scheduled trip number</td></tr>
           <tr><td>service_date</td><td>DATE</td><td>Date of scheduled service</td></tr>
           <tr><td>scheduled_departure</td><td>TIME</td><td>Timetabled departure time</td></tr>
@@ -538,7 +550,7 @@
       <h2><span class="step-num">12</span> SQL Analysis Approach</h2>
       <p>
         The core analytical task is joining <code class="inline">complaint_log</code> to
-        <code class="inline">sap_punctuality_extract</code> on route, trip, and date, then aggregating
+        <code class="inline">operational_performance_extract</code> on route, trip, and date, then aggregating
         both to a weekly grain per route so the two measures are comparable on the same axis.
       </p>
       <h3>Weekly complaint vs. punctuality by route</h3>
@@ -557,7 +569,7 @@ weekly_punctuality AS (
         route_id,
         DATE_TRUNC('week', service_date) AS week_start,
         AVG(CASE WHEN status = 'ON_TIME' THEN 1.0 ELSE 0.0 END) AS on_time_rate
-    FROM sap_punctuality_extract
+    FROM operational_performance_extract
     GROUP BY route_id, DATE_TRUNC('week', service_date)
 )
 SELECT
@@ -626,8 +638,8 @@ WHERE prior_complaints > 0
       <h3>Key DAX measures</h3>
       <pre><span class="cm">On-Time % = </span>
 DIVIDE(
-    CALCULATE(COUNTROWS(sap_punctuality_extract), sap_punctuality_extract[status] = "ON_TIME"),
-    COUNTROWS(sap_punctuality_extract)
+    CALCULATE(COUNTROWS(operational_performance_extract), operational_performance_extract[status] = "ON_TIME"),
+    COUNTROWS(operational_performance_extract)
 )
 
 <span class="cm">Complaint Growth WoW = </span>
