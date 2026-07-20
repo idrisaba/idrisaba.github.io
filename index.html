@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clontarf Depot Operational Performance & Regulatory Compliance Monitoring — End-to-End Case Study | Idris Saba</title>
-<meta name="description" content="End-to-end Business Systems Analysis case study examining Clontarf depot performance, regulatory compliance, ticketing monitoring, complaint management, KPI reporting, SQL analysis, and Power BI dashboards in a public transport environment.">
+<title>Idris Saba — Business Systems Analyst Portfolio</title>
+<meta name="description" content="Business Systems Analyst portfolio — process mapping, requirements gathering, SQL, and Power BI, grounded in real operational experience.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#12182B;
@@ -19,741 +19,507 @@
     --white:#FFFFFF;
     --max:1100px;
   }
+ 
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Newsreader', Georgia, serif; font-size:17px; line-height:1.65;}
-  h1,h2,h3,h4,nav,.mono,.tag,.eyebrow,button,.btn{font-family:'Space Grotesk', sans-serif;}
-  .mono, code, pre, .data-table, .meta-bar, .toc a, .req-id{font-family:'IBM Plex Mono', monospace;}
-  a{color:var(--data);}
-
-  /* header */
-  header.site{position:sticky; top:0; z-index:50; background:rgba(241,242,245,0.94); backdrop-filter:blur(6px); border-bottom:1px solid var(--line);}
-  nav{display:flex; align-items:center; justify-content:space-between; max-width:1300px; margin:0 auto; padding:16px 28px;}
-  .brand{font-weight:700; font-size:15px; text-decoration:none; color:var(--ink); display:flex; align-items:center; gap:8px;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Newsreader', Georgia, serif;
+    font-size:17px;
+    line-height:1.6;
+  }
+  h1,h2,h3,.mono,nav,.tag,.eyebrow,.stat-label,button,.btn{
+    font-family:'Space Grotesk', sans-serif;
+  }
+  .mono, .kicker, .card-tags, .flow-label, .skill-list, footer .meta{
+    font-family:'IBM Plex Mono', monospace;
+  }
+ 
+  a{color:inherit;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 28px;}
+ 
+  /* ---------- NAV ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(241,242,245,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:var(--max); margin:0 auto; padding:18px 28px;
+  }
+  .brand{
+    font-weight:700; font-size:16px; letter-spacing:0.02em;
+    text-decoration:none; color:var(--ink);
+    display:flex; align-items:center; gap:8px;
+  }
   .brand-dot{width:8px; height:8px; background:var(--signal); border-radius:1px; display:inline-block;}
-  .back-link{font-size:13.5px; color:var(--muted); text-decoration:none; font-weight:500;}
-  .back-link:hover{color:var(--ink);}
-
-  /* hero */
-  .case-hero{max-width:1300px; margin:0 auto; padding:56px 28px 40px; border-bottom:1px solid var(--line);}
-  .eyebrow{font-size:12.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--signal); font-weight:600; margin-bottom:14px;}
-  h1.case-title{font-size:clamp(30px,4.4vw,46px); font-weight:600; letter-spacing:-0.01em; margin:0 0 18px; max-width:20ch;}
-  .case-sub{color:var(--muted); font-size:17.5px; max-width:66ch; margin:0 0 28px;}
-  .meta-bar{display:flex; flex-wrap:wrap; gap:28px; font-size:12.5px; color:var(--muted);}
-  .meta-bar strong{color:var(--ink); display:block; font-family:'Space Grotesk',sans-serif; font-size:13.5px; margin-bottom:3px;}
-  .disclaimer{
-    margin-top:28px; padding:14px 18px; background:var(--paper-dim); border-left:3px solid var(--signal);
-    font-size:13.5px; color:var(--muted); font-family:'Space Grotesk',sans-serif; max-width:70ch;
+  .nav-links{display:flex; gap:32px; list-style:none; margin:0; padding:0;}
+  .nav-links a{
+    text-decoration:none; font-size:14px; font-weight:500; color:var(--muted);
+    transition:color .15s ease;
   }
-
-  /* layout */
-  .layout{max-width:1300px; margin:0 auto; padding:48px 28px 120px; display:grid; grid-template-columns:230px 1fr; gap:64px; align-items:start;}
-  .toc{position:sticky; top:90px;}
-  .toc-label{font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:14px;}
-  .toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px;}
-  .toc a{
-    display:block; font-size:12.5px; color:var(--muted); text-decoration:none; padding:6px 0 6px 12px;
-    border-left:2px solid var(--line); transition:all .15s ease;
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{
+    font-size:14px; font-weight:600; color:var(--white); background:var(--ink);
+    padding:9px 16px; border-radius:2px; text-decoration:none;
   }
-  .toc a:hover, .toc a.active{color:var(--ink); border-left-color:var(--signal);}
-
-  .content{max-width:74ch;}
-  .case-section{padding:40px 0; border-bottom:1px solid var(--line);}
-  .case-section:last-child{border-bottom:none;}
-  .case-section h2{font-size:24px; font-weight:600; margin:0 0 8px; display:flex; align-items:baseline; gap:12px;}
-  .case-section h2 .step-num{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--signal); font-weight:500;}
-  .case-section h3{font-size:16px; font-weight:600; margin:26px 0 10px;}
-  .case-section p{color:#2A3044; margin:0 0 16px;}
-  .case-section ul, .case-section ol.plain{color:#2A3044; padding-left:22px; margin:0 0 16px;}
-  .case-section li{margin-bottom:7px;}
-
-  /* tables */
-  table{width:100%; border-collapse:collapse; margin:18px 0 26px; font-size:13.5px;}
-  table caption{text-align:left; font-family:'Space Grotesk',sans-serif; font-size:12px; color:var(--muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;}
-  th{background:var(--ink); color:var(--white); text-align:left; padding:10px 12px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:0.03em;}
-  td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; color:#2A3044;}
-  tr:nth-child(even) td{background:var(--white);}
-
-  /* stakeholder cards */
-  .stake-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0 26px;}
-  .stake-card{background:var(--white); border:1px solid var(--line); padding:16px 18px;}
-  .stake-card .role{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; margin-bottom:4px;}
-  .stake-card .interest{font-size:13px; color:var(--muted);}
-
-  /* process flow */
-  .flow{display:flex; flex-direction:column; gap:0; margin:20px 0 28px; border:1px solid var(--line);}
-  .flow-row{display:flex; align-items:stretch; border-bottom:1px solid var(--line);}
-  .flow-row:last-child{border-bottom:none;}
-  .flow-step-n{
-    flex:0 0 52px; background:var(--ink); color:var(--white); display:flex; align-items:center; justify-content:center;
-    font-family:'IBM Plex Mono',monospace; font-size:13px;
+  .nav-mobile-toggle{display:none;}
+ 
+  /* ---------- HERO ---------- */
+  .hero{padding:88px 0 64px;}
+  .kicker{
+    font-size:12.5px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--data); font-weight:500; display:flex; align-items:center; gap:10px; margin-bottom:22px;
   }
-  .flow-step-body{flex:1; padding:14px 18px; background:var(--white);}
-  .flow-step-body .who{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--data); margin-bottom:4px;}
-  .flow-step-body .what{font-size:14px; color:#2A3044;}
-
-  /* pain points */
-  .pain-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0 26px;}
-  .pain-card{background:#FBF3E7; border:1px solid #E7CFA0; padding:16px 18px;}
-  .pain-card .p-title{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; margin-bottom:4px; color:#8A5A16;}
-  .pain-card .p-body{font-size:13px; color:#5B4526;}
-
-  /* user stories */
-  .story-block{background:var(--white); border:1px solid var(--line); padding:20px 22px; margin-bottom:16px;}
-  .story-block .epic{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--data); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;}
-  .story-block .story-id{color:var(--signal); font-family:'IBM Plex Mono',monospace; margin-right:8px;}
-  .story-block .story-text{font-size:15px; margin-bottom:12px;}
-  .ac-list{background:var(--paper); border-left:3px solid var(--data); padding:12px 16px; font-size:13px;}
-  .ac-list .ac-line{font-family:'IBM Plex Mono',monospace; font-size:12px; color:#2A3044; margin-bottom:6px;}
-  .ac-list .ac-line:last-child{margin-bottom:0;}
-  .ac-tag{color:var(--data); font-weight:600;}
-
-  /* rules */
-  .rule{display:flex; gap:14px; padding:12px 0; border-bottom:1px solid var(--line);}
-  .rule:last-child{border-bottom:none;}
-  .rule .rule-id{flex:0 0 50px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--signal);}
-  .rule .rule-text{font-size:14px; color:#2A3044;}
-
-  /* code */
-  pre{
-    background:var(--ink); color:#E4E6EB; padding:20px 22px; overflow-x:auto; font-size:13px; line-height:1.6;
-    border-radius:2px; margin:18px 0 26px;
+  .kicker::before{content:""; width:26px; height:1px; background:var(--data); display:inline-block;}
+ 
+  h1.hero-title{
+    font-size:clamp(34px, 5.4vw, 58px);
+    line-height:1.08;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0 0 26px;
+    max-width:15ch;
   }
-  pre .cm{color:#8B92A8;}
-  code.inline{background:var(--paper-dim); padding:2px 6px; border-radius:2px; font-size:0.9em;}
-
-  /* dashboard mock description */
-  .dash-mock{border:1px solid var(--line); background:var(--white); margin:18px 0 26px;}
-  .dash-tabbar{display:flex; border-bottom:1px solid var(--line); background:var(--paper-dim);}
-  .dash-tab{padding:10px 16px; font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:600; color:var(--muted); border-right:1px solid var(--line);}
-  .dash-tab.active{color:var(--ink); background:var(--white);}
-  .dash-body{padding:20px 22px;}
-  .dash-kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px;}
-  .dash-kpi{border:1px solid var(--line); padding:12px 14px;}
-  .dash-kpi .k-label{font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); font-family:'IBM Plex Mono',monospace;}
-  .dash-kpi .k-val{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; margin-top:4px;}
-  .dash-kpi .k-val.up{color:#B4432B;}
-  .dash-kpi .k-val.down{color:var(--data);}
-  .dash-viz-row{display:grid; grid-template-columns:1.4fr 1fr; gap:12px;}
-  .dash-viz{border:1px solid var(--line); padding:14px; min-height:120px; display:flex; flex-direction:column; justify-content:space-between;}
-  .dash-viz .v-label{font-size:11px; color:var(--muted); font-family:'IBM Plex Mono',monospace;}
-
-  /* benefits */
-  .benefit-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 26px;}
-  .benefit-card{background:var(--ink); color:var(--white); padding:20px 18px;}
-  .benefit-card .b-num{font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:600; color:var(--signal);}
-  .benefit-card .b-label{font-size:12.5px; color:#B9BDCC; margin-top:6px;}
-
-  /* lessons */
-  .lesson{display:flex; gap:16px; margin-bottom:20px;}
-  .lesson .l-mark{flex:0 0 auto; font-family:'IBM Plex Mono',monospace; color:var(--signal); font-size:13px;}
-  .lesson .l-body{font-size:14.5px; color:#2A3044;}
-
-  footer.case-footer{border-top:1px solid var(--line); padding:40px 28px; max-width:1300px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px;}
-  footer.case-footer a{font-size:13.5px; color:var(--muted); text-decoration:none;}
-  footer.case-footer a:hover{color:var(--ink);}
-
-  @media (max-width:960px){
-    .layout{grid-template-columns:1fr;}
-    .toc{position:static; margin-bottom:8px;}
-    .stake-grid, .pain-grid{grid-template-columns:1fr;}
-    .dash-kpi-row{grid-template-columns:1fr 1fr;}
-    .dash-viz-row{grid-template-columns:1fr;}
-    .benefit-grid{grid-template-columns:1fr;}
+  h1.hero-title em{
+    font-style:normal;
+    color:var(--data);
   }
-  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+  .hero-sub{
+    font-size:19px; color:#333A4D; max-width:56ch; margin:0 0 36px;
+  }
+  .hero-actions{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:56px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 22px; border-radius:2px; font-size:14.5px; font-weight:600;
+    text-decoration:none; border:1px solid var(--ink); transition:all .15s ease;
+  }
+  .btn-primary{background:var(--ink); color:var(--white);}
+  .btn-primary:hover{background:#232B44;}
+  .btn-ghost{background:transparent; color:var(--ink);}
+  .btn-ghost:hover{background:var(--paper-dim);}
+ 
+  /* ---------- PIPELINE (signature element) ---------- */
+  .pipeline{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:28px 0;
+  }
+  .pipeline-track{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:6px; overflow-x:auto;
+  }
+  .pipeline-step{
+    display:flex; flex-direction:column; align-items:flex-start; gap:6px;
+    min-width:118px; flex:1;
+  }
+  .pipeline-step .flow-label{
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);
+  }
+  .pipeline-step .flow-name{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:15px;
+  }
+  .pipeline-arrow{
+    color:var(--line); font-size:18px; flex:0 0 auto; padding:0 4px;
+  }
+  .pipeline-step.is-origin .flow-name{color:var(--muted);}
+  .pipeline-step.is-dest .flow-name{color:var(--signal);}
+ 
+  /* ---------- SECTION shell ---------- */
+  section{padding:76px 0;}
+  .section-head{max-width:60ch; margin-bottom:44px;}
+  .eyebrow{
+    font-size:12.5px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--signal); font-weight:600; margin-bottom:12px;
+  }
+  h2.section-title{
+    font-size:clamp(26px,3.4vw,36px); font-weight:600; letter-spacing:-0.01em; margin:0 0 14px;
+  }
+  .section-desc{color:var(--muted); font-size:16.5px;}
+ 
+  /* ---------- VALUE PROP ---------- */
+  .value-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .value-card{
+    background:var(--paper); padding:30px 26px; min-height:190px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .value-num{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);}
+  .value-title{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:17px; margin:14px 0 8px;}
+  .value-text{font-size:14.5px; color:var(--muted); line-height:1.55;}
+ 
+  /* ---------- STORY ---------- */
+  .story{background:var(--ink); color:var(--paper);}
+  .story .section-desc{color:#B9BDCC;}
+  .story-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:start;}
+  .story-stats{display:flex; flex-direction:column; gap:26px;}
+  .stat{border-top:1px solid #333A52; padding-top:16px;}
+  .stat-num{font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:600; color:var(--signal);}
+  .stat-label{font-size:12.5px; color:#9BA0B4; text-transform:uppercase; letter-spacing:0.06em; margin-top:4px;}
+  .story-copy p{font-size:16.5px; color:#D7D9E3; margin:0 0 20px;}
+  .story-copy strong{color:var(--white); font-weight:600;}
+ 
+  /* ---------- SKILLS ---------- */
+  .skills-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  .skill-block{background:var(--white); border:1px solid var(--line); padding:26px;}
+  .skill-block h3{font-size:15px; font-weight:600; margin:0 0 16px; display:flex; align-items:center; gap:8px;}
+  .skill-block h3 .sw{width:7px;height:7px;border-radius:50%; display:inline-block;}
+  .skill-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px;}
+  .skill-list li{font-size:13.5px; color:#333A4D; display:flex; align-items:baseline; gap:8px;}
+  .skill-list li::before{content:"—"; color:var(--line); flex:0 0 auto;}
+ 
+  /* ---------- PROJECTS ---------- */
+  .project-list{display:flex; flex-direction:column; border-top:1px solid var(--line);}
+  .project-card{
+    display:grid; grid-template-columns:44px 1.4fr 1.8fr auto;
+    gap:24px; align-items:center;
+    padding:26px 0; border-bottom:1px solid var(--line);
+    text-decoration:none; color:var(--ink);
+    transition:background .15s ease;
+  }
+  .project-card:hover{background:var(--white);}
+  .project-idx{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--muted);}
+  .project-name{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:18px;}
+  .project-name .flag{
+    display:inline-block; margin-left:10px; font-family:'IBM Plex Mono',monospace;
+    font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:var(--signal);
+    border:1px solid var(--signal); border-radius:2px; padding:2px 6px; vertical-align:middle;
+  }
+  .project-desc{font-size:14.5px; color:var(--muted); line-height:1.5;}
+  .card-tags{display:flex; gap:8px; flex-wrap:wrap; font-size:11px; color:var(--data); justify-self:end;}
+  .card-tags span{border:1px solid var(--data); padding:3px 8px; border-radius:2px; white-space:nowrap;}
+  .project-arrow{justify-self:end; font-size:20px; color:var(--muted);}
+ 
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{border-top:1px solid var(--line); padding:64px 0 40px;}
+  .footer-grid{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:32px;}
+  footer h2{font-size:clamp(24px,3vw,32px); font-weight:600; margin:0 0 12px; max-width:16ch;}
+  footer p.lead{color:var(--muted); max-width:44ch; margin:0 0 26px;}
+  .footer-links{display:flex; gap:14px; flex-wrap:wrap;}
+  footer .meta{font-size:12.5px; color:var(--muted); margin-top:48px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+ 
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:880px){
+    .nav-links{display:none;}
+    .value-grid{grid-template-columns:repeat(2,1fr);}
+    .story-grid{grid-template-columns:1fr; gap:36px;}
+    .skills-grid{grid-template-columns:1fr;}
+    .project-card{grid-template-columns:1fr; gap:8px;}
+    .card-tags{justify-self:start;}
+    .project-arrow{display:none;}
+    .pipeline-track{justify-content:flex-start;}
+  }
+ 
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+ 
+  ::selection{background:var(--signal); color:var(--white);}
 </style>
 </head>
 <body>
-
+ 
 <header class="site">
   <nav>
-    <a href="../../index.html" class="brand"><span class="brand-dot"></span>Idris Saba</a>
-    <a href="../../index.html#work" class="back-link">← Back to all projects</a>
+    <a href="#top" class="brand"><span class="brand-dot"></span>Idris Saba</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="assets/docs/resume.pdf" class="nav-cta">Resume</a>
   </nav>
 </header>
-
-<div class="case-hero">
-  <div class="eyebrow">Flagship Case Study · Full BSA Lifecycle</div>
-  <h1 class="case-title">Clontarf Depot Operational Performance & Regulatory Compliance Monitoring</h1>
-  <p class="case-sub">
-This case study demonstrates how Business Systems Analysis techniques can be applied to operational reporting, regulatory compliance monitoring, customer complaints management and performance analysis within a public transport environment.
-Drawing on operational processes I encountered while working within Dublin Bus, the project examines how stakeholder needs, business processes, reporting requirements and operational data can be integrated into a unified decision-support solution.
-The project showcases stakeholder analysis, process mapping, requirements gathering, business rules, user stories, acceptance criteria, SQL analytics and Power BI dashboard design.
-  </p>
-  <div class="meta-bar">
-    <div><strong>Sector</strong>Public transport operations</div>
-<div>
-<strong>Role</strong>Business Systems Analyst (Portfolio Project)</div>
-    <div><strong>Artefacts</strong>Process Map · BRD · User Stories · Acceptance Criteria · Business Rules · Data Dictionary · SQL · Power BI</div>
-<div><strong>Tools</strong>SAP (operational record retrieval) · Mobile Statistics (KPI reporting) · SQL · Power BI · BPMN</div>
+ 
+<main id="top">
+ 
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="kicker">Business Systems Analyst — Portfolio</div>
+      <h1 class="hero-title">I turn operational friction into <em>requirements, data, and decisions.</em></h1>
+		<div style="
+background:#f8f8f8;
+border-left:4px solid #C98A2E;
+padding:16px;
+margin:30px 0;
+font-size:14px;
+color:#555;
+">
+<strong>Portfolio Disclaimer:</strong>
+The projects presented on this website are self-directed portfolio projects created to demonstrate Business Systems Analysis, SQL, Power BI, and process improvement methodologies. While inspired by operational environments and professional experience, all datasets, figures, requirements, process flows, and scenarios are illustrative unless explicitly stated otherwise. No confidential, proprietary, or internal company information has been used.
 </div>
-  <div class="disclaimer">
-    <strong style="font-weight:600;">Note on scope:</strong> this case study is a realistic, self-directed
-    project built to demonstrate BSA methodology. The scenario is modelled on operational patterns I
-    observed as a Clerical Officer at Dublin Bus — process structure, data types, and pain points are
-    representative of the domain. Company names, figures, and datasets are illustrative, not actual
-    Dublin Bus data or systems.
-  </div>
+      <p class="hero-sub">
+I am Idris Saba, an operations professional transitioning into Business Systems Analysis.
 
-  <div class="disclaimer">
-   <strong style="font-weight:600;">Project Status:</strong> Portfolio project under development.
- </div>
-<section class="case-section" id="about-project">
-<h2><span class="step-num">00</span> Why I Chose This Project</h2>
+My experience includes SAP-supported processes, operational reporting, stakeholder engagement,
+KPI monitoring, and process improvement within Dublin Bus. Through that work, I became increasingly
+interested in understanding how business processes and data come together to support
+effective decision-making.
 
-<p>
-This case study was inspired by operational, reporting and compliance
-processes I encountered while working in public transport administration.
+This portfolio showcases projects in business analysis, process mapping, SQL, and Power BI,
+demonstrating how operational challenges can be transformed into structured requirements,
+actionable insights, and practical business solutions.
 </p>
-
-<p>
-In my role I supported KPI reporting, operational investigations,
-SAP-based record retrieval, stakeholder communication and management
-reporting activities.
-</p>
-
-<p>
-I created this project to demonstrate how Business Systems Analysis
-techniques can be used to connect operational performance data,
-customer complaints and regulatory compliance processes into a
-unified decision-support solution.
-</p>
-
-<p>
-The project combines practical operational experience with process
-mapping, requirements gathering, stakeholder analysis, SQL analytics
-and dashboard design.
-</p>
-</section>
-
-</div>
-
-<div class="layout">
-<aside class="toc">
-<div class="toc-label">Contents</div>
-
-<ol>
-<li><a href="#about-project">00 Why I Chose This Project</a></li>
-<li><a href="#problem">01 Business Problem</a></li>
-<li><a href="#stakeholders">02 Stakeholders</a></li>
-<li><a href="#my-role">02A My Role</a></li>
-<li><a href="#current-state">03 Current State Process</a></li>
-<li><a href="#pain-points">04 Pain Points</a></li>
-<a href="/Idris_Saba_CV.pdf">Download résumé</
-<li><a href="#as-is">05 As-Is Summary</a></li>
-<li><a href="#future-state">06 Future State Proposal</a></li>
-<li><a href="#requirements">07 Requirements</a></li>
-<li><a href="#user-stories">08 User Stories</a></li>
-<li><a href="#acceptance-criteria">09 Acceptance Criteria</a></li>
-<li><a href="#business-rules">10 Business Rules</a></li>
-<li><a href="#data-dictionary">11 Data Dictionary</a></li>
-<li><a href="#sql-approach">12 SQL Analysis</a></li>
-<li><a href="#powerbi">13 Power BI Dashboard Design</a></li>
-<li><a href="#benefits">14 Benefits &amp; Outcomes</a></li>
-<li><a href="#lessons">15 Lessons Learned</a></li>
-</ol>
-</aside>
-<div class="content">
-
-    <!-- 1 -->
-    <section class="case-section" id="problem">
-      <h2><span class="step-num">01</span> Business Problem</h2>
-      <p>
-        Public transport operators are subject to regulatory performance standards.
-	Failure to meet timing-point targets, service reliability thresholds,
-	or complaint response obligations can result in financial penalties,
-	customer dissatisfaction, and reputational damage.
-      </p>
-      <p>
-        Operational performance information exists across multiple business functions.
-         Route punctuality data is monitored through Mobile Statistics KPI reporting,
-         ticketing device performance is reviewed through SAP and Qlik reporting,
-        and customer complaints are supported by operational investigations using SAP
-       service records and separate complaint-management workflows with strict SLA         requirements.
-      </p>
-      <p>
-     	Because these processes are reviewed independently,
-	management lacks a consolidated view of operational performance,
-	ticketing compliance issues, complaint trends,
-	and emerging risks that could lead to regulatory penalties.
-      </p>
-
-      <p>
-	This project investigates how operational, customer, and
-	compliance information can be integrated into a unified 
-	reporting solution that supports earlier intervention and
-	better decision-making.
-      </p>
-
-
-    </section>
-
-    <!-- 2 -->
-    <section class="case-section" id="stakeholders">
-      <h2><span class="step-num">02</span> Stakeholders</h2>
-      <p>Several stakeholder groups have a direct interest in how this problem is resolved:</p>
-      <div class="stake-grid">
-      <div class="stake-card">
-          <div class="role">Technology Development Team</div>
-	   <div class="interest">Responsible for ticketing device monitoring, breach-code analysis, data quality reporting, and regulatory compliance support.</div>
-	</div>
-        <div class="stake-card">
-          <div class="role">Customer Service Team Lead</div>
-          <div class="interest">Owns complaint logging; needs less manual re-keying and a categorisation scheme operations will actually accept.</div>
-        </div>
-     	<div class="stake-card">
-          <div class="role">Operations Administration</div>
-	   <div class="interest">Responsible for KPI reporting, timing-point performance monitoring, SAP invoicing, receipting, cash and adjustment processing, and operational support.</div>
-	</div>
-        <div class="stake-card">
-          <div class="role">Operations / Scheduling Manager</div>
-<div class="interest">Responsible for punctuality KPI reporting through Mobile Statistics and requires complaint data that can be analysed at the same route and trip level. </div>
-</div>
-        <div class="stake-card">
-          <div class="role">Duty Managers</div>
-          <div class="interest">Act on service issues day-to-day; need to see complaint and KPI data together, not two weeks later in a meeting.</div>
-        </div>
-        <div class="stake-card">
-          <div class="role">IT / Systems Support</div>
-          <div class="interest">Maintains operational data extracts and any new reporting layer; needs a solution that doesn't require changes to core operational systems.</div>
-        </div>
-        <div class="stake-card">
-          <div class="role">Senior Management</div>
-          <div class="interest">Sponsors the monthly KPI report to the Board; needs a single trusted number and a defensible explanation of variance.</div>
-        </div>
+      <div class="hero-actions">
+        <a href="#work" class="btn btn-primary">View the work →</a>
+        <a href="assets/docs/resume.pdf" class="btn btn-ghost">Download résumé</a>
       </div>
-    </section>
-<section class="case-section" id="my-role">
-
-<h2><span class="step-num">02A</span> My Role</h2>
-
-<p>
-For this case study I performed the role of Business Systems Analyst.
-</p>
-
-<ul>
-<li>Defined the business problem and project scope</li>
-<li>Identified stakeholders and business needs</li>
-<li>Documented the current-state process</li>
-<li>Analysed operational pain points</li>
-<li>Designed a future-state process</li>
-<li>Produced requirements and business rules</li>
-<li>Created user stories and acceptance criteria</li>
-<li>Designed SQL analysis approaches</li>
-<li>Developed Power BI reporting concepts</li>
-</ul>
-
-</section>
-
-    <!-- 3 -->
-    <section class="case-section" id="current-state">
-      <h2><span class="step-num">03</span> Current State Process</h2>
-      <p>Elicited through simulated stakeholder walkthroughs with Customer Service and Operations:</p>
-      <div class="flow">
-        <div class="flow-row">
-          <div class="flow-step-n">1</div>
-          <div class="flow-step-body"><div class="who">Passenger</div><div class="what">Submits a complaint by phone, web form, or in person, describing the issue in free text.</div></div>
-        </div>
-        <div class="flow-row">
-          <div class="flow-step-n">2</div>
-          <div class="flow-step-body"><div class="who">Customer Service Officer</div><div class="what">Manually re-keys the complaint into a shared spreadsheet, selecting a route and a reason category from a loosely enforced dropdown.</div></div>
-        </div>
-        <div class="flow-row">
-          <div class="flow-step-n">3</div>
-          <div class="flow-step-body"><div class="who">Customer Service Officer</div><div class="what">At month end, filters and totals the spreadsheet manually by route to produce a complaint summary.</div></div>
-        </div>
-<div class="flow-row">
-<div class="flow-step-n">4</div>
-<div class="flow-step-body">
-<div class="who">Operations Analyst</div>
-<div class="what">
-Independently extracts punctuality and cancellation KPIs from Mobile Statistics for the same period, by route and trip.
-</div>
-</div>
-</div>
-        <div class="flow-row">
-          <div class="flow-step-n">5</div>
-          <div class="flow-step-body"><div class="who">Both teams</div><div class="what">Meet monthly to manually compare the two summaries side by side, reconciling discrepancies by discussion rather than shared data.</div></div>
-        </div>
-        <div class="flow-row">
-          <div class="flow-step-n">6</div>
-          <div class="flow-step-body"><div class="who">Senior Management</div><div class="what">Receives a combined KPI report, sometimes with unresolved discrepancies noted as caveats.</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4 -->
-    <section class="case-section" id="pain-points">
-      <h2><span class="step-num">04</span> Pain Points</h2>
-      <div class="pain-grid">
-        <div class="pain-card"><div class="p-title">No shared key</div><div class="p-body">Complaints are logged using free-text information, while operational systems use structured route identifiers, trip references, and service dates. The two cannot easily be joined without manual mapping.</div></div>
-        <div class="pain-card"><div class="p-title">Inconsistent categorisation</div><div class="p-body">Complaint reason categories are chosen inconsistently between officers, making trend analysis unreliable.</div></div>
-        <div class="pain-card"><div class="p-title">Reporting lag</div><div class="p-body">Reconciliation happens once a month, so a developing issue on a route isn't visible to Duty Managers until weeks later.</div></div>
-        <div class="pain-card"><div class="p-title">Manual effort</div><div class="p-body">Two officers independently spend a full day each month producing summaries that still need to be reconciled by hand.</div></div>
-        <div class="pain-card"><div class="p-title">Disputed KPI</div><div class="p-body">Unexplained variance between complaint volume and operational performance KPIs undermines confidence in the numbers reported to management.</div></div>
-        <div class="pain-card"><div class="p-title">No audit trail</div><div class="p-body">Spreadsheet edits are untracked, so it's not possible to see who changed a categorisation or when.</div></div>
-      </div>
-    </section>
-
-    <!-- 5 -->
-    <section class="case-section" id="as-is">
-      <h2><span class="step-num">05</span> As-Is Process Summary</h2>
-      <p>In BPMN terms, the as-is process has two parallel lanes — Customer Service and Operations — that never intersect except in a monthly, manual, meeting-based reconciliation step. That single point of convergence is late, manual, and produces no reusable output: the reconciliation is redone from scratch every month because nothing from it is fed back into either source system.</p>
-      <p>The core structural problem the future-state design has to solve isn't the reconciliation meeting itself — it's the absence of a shared identifier and a shared data store <em>before</em> that meeting happens.</p>
-    </section>
-
-    <!-- 6 -->
-    <section class="case-section" id="future-state">
-      <h2><span class="step-num">06</span> Future State Proposal</h2>
-      <p>
-        Introduce a lightweight <strong>Complaint Intake Form</strong> that captures route and trip using
-        the same reference data SAP uses (route ID, scheduled trip number, date), instead of free text.
-Complaint records land in a shared database table alongside a nightly operational performance extract sourced from Mobile Statistics. The datasets are joined using route ID, trip number, and service date, creating a unified reporting layer for operational and customer-service analysis.
-      </p>
-      <p>
-        A single Power BI dashboard, refreshed daily, replaces the manual monthly summary — visible to
-        Customer Service, Operations, and Duty Managers simultaneously, so reconciliation becomes a
-        by-product of daily reporting rather than a monthly exercise.
-      </p>
-      <h3>Future State Vision</h3>
-
-      <p>
-	A single reporting platform combines route performance data,
-	ticketing device monitoring, 
-	complaint management,
-	SLA compliance tracking,
-	and regulatory performance indicators.
-      </p>
-	
-      <p>
-	Automated alerts identify:
-      </p>
-
-      <ul>
-	<li>Ticketing devices that have stopped reporting</li>
-	<li>Complaint SLA breaches</li>
-	<li>Deteriorating route performance</li>
-	<li>Recurring breach-code trends</li>
-	<li>Emerging compliance risks</li>
-       </ul>
-
-       <p>
-	Rather than waiting for month-end KPI reviews, 
-	managers gain daily visibility into operational performance, 
-	allowing issues to be investigated and resolved earlier.
-       </p>
-<h3>Business Analysis Artefacts Produced</h3>
-
-<ul>
-<li>Stakeholder Analysis</li>
-<li>Current State Process Mapping</li>
-<li>Future State Design</li>
-<li>Business Requirements</li>
-<li>User Stories</li>
-<li>Acceptance Criteria</li>
-<li>Business Rules</li>
-<li>Data Dictionary</li>
-<li>SQL Analysis</li>
-<li>Power BI Dashboard Design</li>
-</ul>
-
-<p>
-Additional BPMN diagrams, process maps, dashboard screenshots and
-requirements documentation will be added as the project continues
-to evolve.
-</p>
-    </section>
-
-    <!-- 7 -->
-    <section class="case-section" id="requirements">
-      <h2><span class="step-num">07</span> Requirements</h2>
-      <table>
-        <caption>Functional requirements</caption>
-        <thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead>
-        <tbody>
-          <tr><td class="req-id">FR-01</td><td>The intake form must require route ID, scheduled trip number, and date, selected from validated reference lists rather than free text.</td><td>Must</td></tr>
-          <tr><td class="req-id">FR-02</td><td>The intake form must offer a fixed set of complaint reason categories, replacing the current free-text field.</td><td>Must</td></tr>
-          <tr><td class="req-id">FR-03</td><td>Complaint records must be stored in a structured table accessible to both Customer Service and Operations.</td><td>Must</td></tr>
-          <tr><td class="req-id">FR-04</td><td>A nightly process must load operational performance data from Mobile Statistics into the reporting database.</td><td>Must</td></tr>
-          <tr><td class="req-id">FR-05</td><td>The dashboard must allow filtering by route, date range, and complaint reason.</td><td>Must</td></tr>
-          <tr><td class="req-id">FR-06</td><td>The dashboard must flag routes where complaint volume and punctuality KPI move in conflicting directions.</td><td>Should</td></tr>
-          <tr><td class="req-id">FR-07</td><td>Edits to a logged complaint must retain an audit trail of who changed it and when.</td><td>Should</td></tr>
-          <tr><td class="req-id">FR-08</td><td>Duty Managers must be able to export a filtered view for a single route as a shareable report.</td><td>Could</td></tr>
-        </tbody>
-      </table>
-      <table>
-        <caption>Non-functional requirements</caption>
-        <thead><tr><th>ID</th><th>Requirement</th></tr></thead>
-        <tbody>
-          <tr><td class="req-id">NFR-01</td><td>Dashboard must refresh with the previous day's data by 8:00am each working day.</td></tr>
-          <tr><td class="req-id">NFR-02</td><td>Reference data (routes, trip numbers) must be sourced from SAP to avoid duplicate maintenance.</td></tr>
-          <tr><td class="req-id">NFR-03</td><td>The intake form must be usable without training beyond a single walkthrough — Customer Service staff have a full workload already.</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- 8 -->
-    <section class="case-section" id="user-stories">
-      <h2><span class="step-num">08</span> User Stories</h2>
-
-      <div class="story-block">
-        <div class="epic">Epic: Structured complaint intake</div>
-        <div class="story-text"><span class="story-id">US-01</span>As a Customer Service Officer, I want to select the route and trip from a validated list, so that my complaint record can be matched to SAP data without manual mapping.</div>
-      </div>
-
-      <div class="story-block">
-        <div class="epic">Epic: Structured complaint intake</div>
-        <div class="story-text"><span class="story-id">US-02</span>As a Customer Service Officer, I want to choose a complaint reason from a fixed category list, so that reporting on trends is consistent across officers.</div>
-      </div>
-
-      <div class="story-block">
-        <div class="epic">Epic: Unified reporting</div>
-        <div class="story-text"><span class="story-id">US-03</span>As an Operations Manager, I want to see complaint volume and punctuality KPI for the same route side by side, so that I can judge whether a spike in complaints is backed by a genuine service issue.</div>
-      </div>
-
-      <div class="story-block">
-        <div class="epic">Epic: Unified reporting</div>
-        <div class="story-text"><span class="story-id">US-04</span>As a Duty Manager, I want to be alerted when a route's complaint volume rises without a matching KPI change, so that I can investigate causes the KPI alone wouldn't surface.</div>
-      </div>
-
-      <div class="story-block">
-        <div class="epic">Epic: Governance</div>
-        <div class="story-text"><span class="story-id">US-05</span>As a Customer Service Team Lead, I want a record of who edited a complaint entry and when, so that I can answer questions about data changes during audits.</div>
-      </div>
-    </section>
-
-    <!-- 9 -->
-    <section class="case-section" id="acceptance-criteria">
-      <h2><span class="step-num">09</span> Acceptance Criteria</h2>
-
-      <div class="story-block">
-        <div class="epic"><span class="story-id" style="color:var(--data);">US-01</span>Structured route/trip selection</div>
-        <div class="ac-list">
-          <div class="ac-line"><span class="ac-tag">GIVEN</span> the officer opens the intake form</div>
-          <div class="ac-line"><span class="ac-tag">WHEN</span> they begin typing a route number</div>
-          <div class="ac-line"><span class="ac-tag">THEN</span> only valid SAP route IDs are offered, and free-text entry is disabled</div>
-        </div>
-      </div>
-
-      <div class="story-block">
-        <div class="epic"><span class="story-id" style="color:var(--data);">US-03</span>Side-by-side KPI and complaint view</div>
-        <div class="ac-list">
-          <div class="ac-line"><span class="ac-tag">GIVEN</span> a route and date range are selected on the dashboard</div>
-          <div class="ac-line"><span class="ac-tag">WHEN</span> the page loads</div>
-          <div class="ac-line"><span class="ac-tag">THEN</span> complaint volume and punctuality KPI for that route and range are shown on the same chart, using the same date axis</div>
-        </div>
-      </div>
-
-      <div class="story-block">
-        <div class="epic"><span class="story-id" style="color:var(--data);">US-04</span>Conflict flagging</div>
-        <div class="ac-list">
-          <div class="ac-line"><span class="ac-tag">GIVEN</span> a route's complaint volume rises more than 20% week-on-week</div>
-          <div class="ac-line"><span class="ac-tag">AND</span> its punctuality KPI changes by less than 2 percentage points in the same week</div>
-          <div class="ac-line"><span class="ac-tag">THEN</span> the route is flagged on the dashboard's exception list</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 10 -->
-    <section class="case-section" id="business-rules">
-      <h2><span class="step-num">10</span> Business Rules</h2>
-      <div class="rule"><div class="rule-id">BR-01</div><div class="rule-text">A complaint cannot be submitted without a valid route ID and trip number matched against the current SAP reference list.</div></div>
-      <div class="rule"><div class="rule-id">BR-02</div><div class="rule-text">Complaint reason must be selected from the approved category list; "Other" requires a mandatory free-text note capped at 200 characters, reviewed weekly to identify new recurring categories.</div></div>
-      <div class="rule"><div class="rule-id">BR-03</div><div class="rule-text">A complaint may only be edited by the officer who logged it or a Team Lead, and every edit is timestamped and attributed.</div></div>
-      <div class="rule"><div class="rule-id">BR-04</div><div class="rule-text">The punctuality KPI for a route is defined as the percentage of scheduled trips departing within 5 minutes of timetable, consistent with the existing Mobile Statistics reporting methodology — the new process does not redefine the KPI, only reconciles it against complaints.</div></div>
-      <div class="rule"><div class="rule-id">BR-05</div><div class="rule-text">A route is added to the exception list when complaint volume rises more than 20% week-on-week without a corresponding punctuality KPI change of at least 2 percentage points.</div></div>
-    </section>
-
-    <!-- 11 -->
-    <section class="case-section" id="data-dictionary">
-      <h2><span class="step-num">11</span> Data Dictionary</h2>
-     <h3>Operational Data Sources</h3>
-<ul>
-<li><strong>SAP:</strong> Used to retrieve operational service records, identify drivers assigned to services, trace vehicle activity, validate Leap Card transactions, and support complaint investigations.</li>
-
-<li><strong>Mobile Statistics:</strong> Used to extract punctuality, cancellation, and route-performance KPIs for operational monitoring and reporting.</li>
-
-<li><strong>Complaint Management Records:</strong> Customer service complaints and investigation outcomes.</li>
-</ul>
-      <table>
-        <caption>complaint_log</caption>
-        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
-        <tbody>
-          <tr><td>complaint_id</td><td>INT, PK</td><td>Unique identifier, auto-generated</td></tr>
-          <tr><td>route_id</td><td>VARCHAR(10)</td><td>SAP route identifier, validated against reference table</td></tr>
-          <tr><td>trip_number</td><td>VARCHAR(12)</td><td>Scheduled trip number from SAP</td></tr>
-          <tr><td>complaint_date</td><td>DATE</td><td>Date of service the complaint relates to</td></tr>
-          <tr><td>reason_code</td><td>VARCHAR(20)</td><td>Fixed category, e.g. LATE, CANCELLED, OVERCROWDED, DRIVER_CONDUCT</td></tr>
-          <tr><td>logged_by</td><td>VARCHAR(30)</td><td>Officer ID who created the record</td></tr>
-          <tr><td>logged_at</td><td>DATETIME</td><td>Timestamp of creation</td></tr>
-          <tr><td>last_edited_by</td><td>VARCHAR(30)</td><td>Officer ID of most recent edit, nullable</td></tr>
-        </tbody>
-      </table>
-      <table>
-        <caption>operational_performance_extract</caption>
-        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
-        <tbody>
-          <tr><td>route_id</td><td>VARCHAR(10)</td><td>Operational route identifier used for KPI reporting</td></tr>
-          <tr><td>trip_number</td><td>VARCHAR(12)</td><td>Scheduled trip number</td></tr>
-          <tr><td>service_date</td><td>DATE</td><td>Date of scheduled service</td></tr>
-          <tr><td>scheduled_departure</td><td>TIME</td><td>Timetabled departure time</td></tr>
-          <tr><td>actual_departure</td><td>TIME</td><td>Recorded departure time, nullable if cancelled</td></tr>
-          <tr><td>status</td><td>VARCHAR(15)</td><td>ON_TIME, LATE, CANCELLED</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- 12 -->
-    <section class="case-section" id="sql-approach">
-      <h2><span class="step-num">12</span> SQL Analysis Approach</h2>
-      <p>
-        The core analytical task is joining <code class="inline">complaint_log</code> to
-        <code class="inline">operational_performance_extract</code> on route, trip, and date, then aggregating
-        both to a weekly grain per route so the two measures are comparable on the same axis.
-      </p>
-      <h3>Weekly complaint vs. punctuality by route</h3>
-      <pre><span class="cm">-- Weekly complaint count and punctuality rate per route,
--- used to power the dashboard's side-by-side trend view</span>
-WITH weekly_complaints AS (
-    SELECT
-        route_id,
-        DATE_TRUNC('week', complaint_date) AS week_start,
-        COUNT(*) AS complaint_count
-    FROM complaint_log
-    GROUP BY route_id, DATE_TRUNC('week', complaint_date)
-),
-weekly_punctuality AS (
-    SELECT
-        route_id,
-        DATE_TRUNC('week', service_date) AS week_start,
-        AVG(CASE WHEN status = 'ON_TIME' THEN 1.0 ELSE 0.0 END) AS on_time_rate
-    FROM operational_performance_extract
-    GROUP BY route_id, DATE_TRUNC('week', service_date)
-)
-SELECT
-    COALESCE(c.route_id, p.route_id)   AS route_id,
-    COALESCE(c.week_start, p.week_start) AS week_start,
-    COALESCE(c.complaint_count, 0)     AS complaint_count,
-    ROUND(p.on_time_rate * 100, 1)     AS on_time_pct
-FROM weekly_complaints c
-FULL OUTER JOIN weekly_punctuality p
-    ON c.route_id = p.route_id AND c.week_start = p.week_start
-ORDER BY route_id, week_start;</pre>
-
-      <h3>Exception flag: complaints rising without a KPI move</h3>
-      <p>A window function compares each route's current week to the prior week, applying business rule BR-05:</p>
-      <pre><span class="cm">-- Flags routes matching the exception rule (BR-05)</span>
-WITH weekly AS (
-    <span class="cm">-- (same aggregation as above, aliased as weekly)</span>
-    SELECT route_id, week_start, complaint_count, on_time_pct
-    FROM weekly_summary
-),
-with_prior AS (
-    SELECT
-        *,
-        LAG(complaint_count) OVER (PARTITION BY route_id ORDER BY week_start) AS prior_complaints,
-        LAG(on_time_pct)    OVER (PARTITION BY route_id ORDER BY week_start) AS prior_on_time_pct
-    FROM weekly
-)
-SELECT
-    route_id,
-    week_start,
-    complaint_count,
-    prior_complaints,
-    ROUND(on_time_pct - prior_on_time_pct, 1) AS kpi_point_change
-FROM with_prior
-WHERE prior_complaints > 0
-  AND (complaint_count - prior_complaints) / prior_complaints::FLOAT > 0.20
-  AND ABS(on_time_pct - prior_on_time_pct) < 2.0;</pre>
-      <p>This query result feeds the dashboard's exception list directly — the same logic is mirrored as a DAX measure in Power BI so the flag stays consistent whether a user is looking at the pre-built dashboard or an ad-hoc extract.</p>
-    </section>
-
-    <!-- 13 -->
-    <section class="case-section" id="powerbi">
-      <h2><span class="step-num">13</span> Power BI Dashboard Design</h2>
-      <p>Three pages, aimed at three different reading speeds: an executive summary, a route drill-down, and the exception list.</p>
-
-      <div class="dash-mock">
-        <div class="dash-tabbar">
-          <div class="dash-tab active">Overview</div>
-          <div class="dash-tab">Route Drill-Down</div>
-          <div class="dash-tab">Exceptions</div>
-        </div>
-        <div class="dash-body">
-          <div class="dash-kpi-row">
-            <div class="dash-kpi"><div class="k-label">Network On-Time %</div><div class="k-val">91.4%</div></div>
-            <div class="dash-kpi"><div class="k-label">Complaints (WTD)</div><div class="k-val up">312</div></div>
-            <div class="dash-kpi"><div class="k-label">Routes Flagged</div><div class="k-val up">4</div></div>
-            <div class="dash-kpi"><div class="k-label">Cancelled Trips</div><div class="k-val down">1.2%</div></div>
+    </div>
+ 
+    <div class="pipeline">
+      <div class="wrap">
+        <div class="pipeline-track">
+          <div class="pipeline-step is-origin">
+            <span class="flow-label">Start</span>
+            <span class="flow-name">Operations floor</span>
           </div>
-          <div class="dash-viz-row">
-            <div class="dash-viz"><div class="v-label">LINE CHART — On-time % vs. complaint volume, 12-week trend</div></div>
-            <div class="dash-viz"><div class="v-label">TABLE — Top 5 routes by complaint growth</div></div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step">
+            <span class="flow-label">Elicit</span>
+            <span class="flow-name">Stakeholder need</span>
+          </div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step">
+            <span class="flow-label">Define</span>
+            <span class="flow-name">Requirements &amp; stories</span>
+          </div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step">
+            <span class="flow-label">Query</span>
+            <span class="flow-name">SQL &amp; SAP data</span>
+          </div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-step is-dest">
+            <span class="flow-label">Deliver</span>
+            <span class="flow-name">Power BI decision</span>
           </div>
         </div>
       </div>
-
-      <h3>Key DAX measures</h3>
-      <pre><span class="cm">On-Time % = </span>
-DIVIDE(
-    CALCULATE(COUNTROWS(operational_performance_extract), operational_performance_extract[status] = "ON_TIME"),
-    COUNTROWS(operational_performance_extract)
-)
-
-<span class="cm">Complaint Growth WoW = </span>
-VAR CurrentWeek = [Complaint Count]
-VAR PriorWeek = CALCULATE([Complaint Count], DATEADD('Calendar'[Date], -7, DAY))
-RETURN DIVIDE(CurrentWeek - PriorWeek, PriorWeek)
-
-<span class="cm">Is Exception Route = </span>
-IF([Complaint Growth WoW] > 0.20 && ABS([On-Time % Change WoW]) < 0.02, "Flagged", "Normal")</pre>
-
-      <h3>Page purpose</h3>
-      <ul>
-        <li><strong>Overview</strong> — for Senior Management: network-level KPIs, refreshed daily, replacing the old monthly manual summary.</li>
-        <li><strong>Route Drill-Down</strong> — for Operations and Duty Managers: filter to one route, see complaint reason breakdown against punctuality trend.</li>
-        <li><strong>Exceptions</strong> — for Duty Managers: the BR-05 flagged list, sorted by complaint growth, for daily triage rather than monthly discovery.</li>
-      </ul>
-    </section>
-
-    <!-- 14 -->
-    <section class="case-section" id="benefits">
-      <h2><span class="step-num">14</span> Benefits and Outcomes</h2>
-      <div class="benefit-grid">
-        <div class="benefit-card"><div class="b-num">Early</div><div class="b-label">Identification of route performance risks before regulatory penalties 	occur</div></div>
-        <div class="benefit-card"><div class="b-num">Single</div><div class="b-label">Source of truth across KPI reporting, complaints, ticketing monitoring, and 	compliance activities</div></div>
-        <div class="benefit-card"><div class="b-num">Daily</div><div class="b-label">Visibility into operational issues instead of waiting for month-end reporting 	cycles</div></div>
+    </div>
+  </section>
+ 
+  <!-- ================= VALUE PROP ================= -->
+  <section id="value">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Why hire me</div>
+        <h2 class="section-title">Understanding the operation first leads to stronger requirements and better solutions.</h2>
+        <p class="section-desc">Four things I bring to a BSA or Data Analyst team that a purely technical background doesn't.</p>
       </div>
-      <p>
-       The primary benefit of the proposed solution is improved visibility across operational performance,
-       regulatory compliance, ticketing device monitoring, and customer service activity.
+      <div class="value-grid">
+        <div class="value-card">
+          <span class="value-num">01</span>
+          <div>
+            <div class="value-title">Operational fluency</div>
+            <p class="value-text">My operational experience helps me understand the strengths and limitations of business processes and the data they generate.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <span class="value-num">02</span>
+          <div>
+            <div class="value-title">Process &amp; requirements</div>
+            <p class="value-text">Process mapping, stakeholder engagement, and problem investigation formed part of my operational responsibilities long before I began studying Business Analysis formally.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <span class="value-num">03</span>
+          <div>
+            <div class="value-title">Technical execution</div>
+            <p class="value-text">SQL and Power BI to take a business question all the way to a query, a model, and a dashboard — without handing it off.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <span class="value-num">04</span>
+          <div>
+            <div class="value-title">Translation, both ways</div>
+            <p class="value-text">I can sit in a workshop with frontline staff and in a review with a delivery team, and say the same thing to both, accurately.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ================= STORY ================= -->
+  <section class="story" id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow" style="color:var(--signal);">The transition</div>
+        <h2 class="section-title" style="color:var(--white);">Not a career change. A formalisation.</h2>
+      </div>
+      <div class="story-grid">
+        <div class="story-stats">
+          <div class="stat">
+            <div class="stat-num">7</div>
+            <div class="stat-label">Years as Clerical Officer, Dublin Bus</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">SAP</div>
+            <div class="stat-label">Direct exposure to enterprise operational data</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Portfolio projects — process to dashboard</div>
+          </div>
+        </div>
+        <div class="story-copy">
+          <p>
+            I spent seven years as a Clerical Officer at Dublin Bus, working inside a live, regulated,
+            high-volume operation. That role put me in daily contact with <strong>SAP data, KPI reporting,
+            and the manual processes</strong> that sit underneath them — the ones that never make it into
+            a slide deck. I saw, repeatedly, where a process broke down before the numbers ever showed it.
+          </p>
+          <p>
+            Rather than wait for a KPI to flag a problem, I started mapping the processes myself,
+            asking stakeholders what they actually needed, and writing the queries to check whether
+            the data agreed. That's the job of a Business Systems Analyst — I was already doing pieces
+            of it without the title or the toolset.
+          </p>
+          <p>
+            This portfolio is me formalising that: five projects that take a real operational problem
+            through the full BSA lifecycle — <strong>process mapping, requirements gathering, SQL analysis,
+            and Power BI reporting</strong> — the same way I'd approach a problem on day one of a BSA role.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ================= SKILLS ================= -->
+  <section id="skills">
+    <div class="wrap">
+<div class="section-head">
+<div class="eyebrow">Capability</div>
 
-       By combining these data sources into a single reporting environment, management can identify emerging
-       issues earlier, prioritise investigations more effectively, and intervene before performance targets
-       or service-level obligations are breached. 
+<h2 class="section-title">
+Business and technical, backed by project evidence
+</h2>
 
-       The solution also supports stronger governance by creating a consistent reporting framework that can 
-       be used by Operations, Technology Development, Customer Service, and Senior Management.
-      </p>
-    </section>
+<p class="section-desc">
+Each capability shown below is demonstrated within the portfolio projects that follow.
+</p>
 
-    <!-- 15 -->
-    <section class="case-section" id="lessons">
-      <h2><span class="step-num">15</span> Lessons Learned</h2>
-      <div class="lesson"><div class="l-mark">→</div><div class="l-body">The hardest part of this problem was never the SQL or the dashboard — it was recognising that two teams were arguing about numbers because their systems didn't share a key. A BSA's first job is often finding that missing key, not building the report.</div></div>
-      <div class="lesson"><div class="l-mark">→</div><div class="l-body">Designing the intake form to reuse SAP's own reference data (rather than creating a new mapping table) was the single decision that made everything downstream — the joins, the DAX, the exception logic — reliable instead of approximate.</div></div>
-      <div class="lesson"><div class="l-mark">→</div><div class="l-body">Writing the business rules (BR-01 to BR-05) before the SQL forced me to make the exception threshold explicit and defensible, rather than an arbitrary line buried in a query.</div></div>
-      <div class="lesson"><div class="l-mark">→</div><div class="l-body">Drafting acceptance criteria in Given/When/Then made it obvious where a requirement was still ambiguous — "validated list" wasn't testable until I specified what happens when an officer types an invalid route.</div></div>
-    </section>
-
-  </div>
 </div>
-
-<footer class="case-footer">
-  <span class="mono" style="font-size:12px; color:var(--muted);">© 2026 Idris Saba — Business Systems Analyst Portfolio</span>
-  <a href="../../index.html#work">View other projects →</a>
+      <div class="skills-grid">
+        <div class="skill-block">
+          <h3><span class="sw" style="background:var(--signal);"></span>Business analysis</h3>
+          <ul class="skill-list">
+            <li>Process mapping (as-is / to-be, BPMN)</li>
+            <li>Requirements gathering &amp; elicitation</li>
+            <li>User stories &amp; acceptance criteria</li>
+            <li>Business process improvement</li>
+            <li>Stakeholder engagement</li>
+          </ul>
+        </div>
+        <div class="skill-block">
+          <h3><span class="sw" style="background:var(--data);"></span>Data &amp; reporting</h3>
+          <ul class="skill-list">
+            <li>SQL (joins, CTEs, window functions)</li>
+            <li>Power BI (DAX, dashboards, data modelling)</li>
+            <li>KPI reporting &amp; performance tracking</li>
+            <li>SAP — operational data exposure</li>
+          </ul>
+        </div>
+        <div class="skill-block">
+          <h3><span class="sw" style="background:var(--muted);"></span>Working practice</h3>
+          <ul class="skill-list">
+            <li>BRD / FRD documentation</li>
+            <li>Backlog prioritisation (MoSCoW)</li>
+            <li>Cross-functional communication</li>
+            <li>Regulated, high-volume operating environments</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ================= PROJECTS ================= -->
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Portfolio</div>
+        <h2 class="section-title">Five projects, one lifecycle</h2>
+        <p class="section-desc">Each one documents a business problem, the approach, the artefacts produced, and the outcome — not just a finished file.</p>
+      </div>
+ 
+      <div class="project-list">
+		<a href="projects/clontarf-case-study.html" class="project-card">
+          <span class="project-idx">01</span>
+          <span class="project-name">End-to-End Case Study<span class="flag">Flagship</span></span>
+          <span class="project-desc">One operational problem run through the full lifecycle: stakeholder interviews, process mapping, requirements, SQL analysis, and a Power BI dashboard.</span>
+          <span class="card-tags"><span>BPMN</span><span>Requirements</span><span>SQL</span><span>Power BI</span></span>
+          <span class="project-arrow">→</span>
+        </a>
+ 
+        <a href="projects/clontarf-case-study.html" class="project-card">
+          <span class="project-idx">02</span>
+          <span class="project-name">Process Re-engineering</span>
+          <span class="project-desc">As-is / to-be redesign of a manual operations workflow, with a bottleneck analysis and rationale memo.</span>
+          <span class="card-tags"><span>BPMN</span><span>Process improvement</span></span>
+          <span class="project-arrow">→</span>
+        </a>
+ 
+        <a href="projects/project-4-powerbi-dashboard/" class="project-card">
+          <span class="project-idx">03</span>
+          <span class="project-name">Power BI Dashboard</span>
+          <span class="project-desc">Interactive operational performance dashboard — KPIs, trends, drill-downs, and DAX measures.</span>
+          <span class="card-tags"><span>Power BI</span><span>DAX</span><span>KPI reporting</span></span>
+          <span class="project-arrow">→</span>
+        </a>
+ 
+        <a href="projects/project-3-requirements-user-stories/" class="project-card">
+          <span class="project-idx">04</span>
+          <span class="project-name">Requirements &amp; User Stories</span>
+          <span class="project-desc">Full requirements package for a system change: stakeholder analysis, BRD excerpt, epics, and a prioritised backlog.</span>
+          <span class="card-tags"><span>BRD</span><span>User stories</span><span>MoSCoW</span></span>
+          <span class="project-arrow">→</span>
+        </a>
+ 
+        <a href="projects/project-1-sql-sales-analysis/" class="project-card">
+          <span class="project-idx">05</span>
+          <span class="project-name">SQL Data Analysis</span>
+          <span class="project-desc">Business-focused SQL analysis using AdventureWorks data to answer questions relating to revenue performance, customer behaviour, product profitability, market performance, and sales trends.</span>
+          <span class="card-tags"><span>SQL</span><span>CTEs</span><span>Window functions</span></span>
+          <span class="project-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ================= CONTACT ================= -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h2>Let's talk about a BSA or Data Analyst role.</h2>
+          <p class="lead">Open to Business Systems Analyst, Technical Business Analyst, Operations Analyst, and Data Analyst opportunities.</p>
+          <div class="footer-links">
+            <a href="mailto:idris.saba1096@gmail.com" class="btn btn-primary">Email me</a>
+            <a href="https://github.com/idrisaba" class="btn btn-ghost">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+</main>
+ 
+<footer>
+  <div class="wrap">
+    <div class="meta">
+      <span>© 2026 Idris Saba. Built with process maps, SQL, and Power BI.</span>
+      <span>Dublin, Ireland</span>
+    </div>
+  </div>
 </footer>
-
+ 
 </body>
 </html>
