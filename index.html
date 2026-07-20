@@ -66,7 +66,15 @@
   .nav-cta{
     font-size:14px; font-weight:600; color:var(--white); background:var(--ink);
     padding:9px 16px; border-radius:2px; text-decoration:none;
+    border:1px solid var(--ink);
+    transition:all .15s ease;
   }
+  .nav-cta:hover{background:#232B44;}
+  .nav-resume-group{display:flex; align-items:center; gap:10px;}
+  .nav-cta-alt{
+    background:transparent; color:var(--ink);
+  }
+  .nav-cta-alt:hover{background:var(--paper-dim);}
   .nav-mobile-toggle{display:none;}
  
   /* ---------- HERO ---------- */
@@ -214,6 +222,8 @@
     .card-tags{justify-self:start;}
     .project-arrow{display:none;}
     .pipeline-track{justify-content:flex-start;}
+    .nav-resume-group{gap:6px;}
+    .nav-cta{padding:8px 12px; font-size:13px;}
   }
  
   @media (prefers-reduced-motion: reduce){
@@ -235,7 +245,10 @@
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a href="assets/docs/resume.pdf" class="nav-cta">Resume</a>
+    <div class="nav-resume-group">
+      <a href="Idris_Saba_CV.pdf" target="_blank" rel="noopener" class="nav-cta">View Resume</a>
+      <a href="Idris_Saba_CV.pdf" download="Idris-Saba-Resume.pdf" class="nav-cta nav-cta-alt">Download</a>
+    </div>
   </nav>
 </header>
  
@@ -246,7 +259,7 @@
     <div class="wrap">
       <div class="kicker">Business Systems Analyst — Portfolio</div>
       <h1 class="hero-title">I turn operational friction into <em>requirements, data, and decisions.</em></h1>
-		<div style="
+<div style="
 background:#f8f8f8;
 border-left:4px solid #C98A2E;
 padding:16px;
@@ -271,7 +284,8 @@ actionable insights, and practical business solutions.
 </p>
       <div class="hero-actions">
         <a href="#work" class="btn btn-primary">View the work →</a>
-        <a href="assets/docs/resume.pdf" class="btn btn-ghost">Download résumé</a>
+        <a href="Idris_Saba_CV.pdf" target="_blank" rel="noopener" class="btn btn-ghost">View résumé →</a>
+        <a href="Idris_Saba_CV.pdf" download="Idris-Saba-Resume.pdf" class="btn btn-ghost">Download résumé ↓</a>
       </div>
     </div>
  
@@ -451,7 +465,7 @@ Each capability shown below is demonstrated within the portfolio projects that f
       </div>
  
       <div class="project-list">
-		<a href="projects/clontarf-case-study.html" class="project-card">
+<a href="projects/clontarf-case-study.html" class="project-card">
           <span class="project-idx">01</span>
           <span class="project-name">End-to-End Case Study<span class="flag">Flagship</span></span>
           <span class="project-desc">One operational problem run through the full lifecycle: stakeholder interviews, process mapping, requirements, SQL analysis, and a Power BI dashboard.</span>
@@ -523,3 +537,4 @@ Each capability shown below is demonstrated within the portfolio projects that f
  
 </body>
 </html>
+
