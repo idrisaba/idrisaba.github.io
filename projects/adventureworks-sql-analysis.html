@@ -104,6 +104,18 @@
 
   code.inline{background:var(--paper-dim); padding:2px 6px; border-radius:2px; font-size:0.9em;}
 
+  /* code blocks */
+  pre{
+    background:var(--ink); color:#E4E6EB; padding:20px 22px; overflow-x:auto; font-size:13px; line-height:1.6;
+    border-radius:2px; margin:18px 0 18px;
+  }
+  pre .cm{color:#8B92A8;}
+
+  /* query result screenshots */
+  .query-figure{margin:0 0 26px; border:1px solid var(--line); background:var(--white);}
+  .query-figure img{display:block; width:100%; height:auto; border-bottom:1px solid var(--line);}
+  .query-figure figcaption{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted); padding:10px 14px;}
+
   footer.case-footer{border-top:1px solid var(--line); padding:40px 28px; max-width:1300px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px;}
   footer.case-footer a{font-size:13.5px; color:var(--muted); text-decoration:none;}
   footer.case-footer a:hover{color:var(--ink);}
@@ -134,8 +146,8 @@
   </p>
   <div class="meta-bar">
     <div><strong>Sector</strong>Retail / e-commerce</div>
-    <div><strong>Capability</strong> Data Analysis &amp; Business Analysis</div>
-    <div><strong>Artefacts</strong>SQL Queries · Revenue Analysis · Customer Segmentation · Business Insights</div>
+    <div><strong>Role simulated</strong>Data Analyst</div>
+    <div><strong>Artefacts</strong>SQL Queries · CTEs · Window Functions · Business Insights</div>
     <div><strong>Tools</strong>SQL Server · T-SQL · AdventureWorks Data Warehouse</div>
   </div>
   <div class="disclaimer">
@@ -201,18 +213,35 @@
     <!-- 3 -->
     <section class="case-section" id="yoy">
       <h2><span class="step-num">03</span> Year-over-Year Revenue Analysis</h2>
-    
       <p>
         This analysis evaluates overall online sales performance and identifies whether revenue
         is increasing or declining over time.
       </p>
+      <pre><span class="cm">-- What are our total online sales for the year, and how does this compare to last year?</span>
+
+SELECT
+    Year([OrderDate]) AS 'Calendar Year',
+FORMAT(SUM(FactInternetSales.SalesAmount), 'C0', 'en-US') AS 'Revenue'
+FROM FactInternetSales
+WHERE [OrderDate] BETWEEN '2013-01-01' AND '2014-12-31'
+GROUP BY Year([OrderDate])</pre>
+      <figure class="query-figure">
+        <img src="../assets/images/adventureworks/yoy-revenue-query.png" alt="SQL query and result set for year-over-year online sales revenue" loading="lazy">
+        <figcaption>Query result — total online revenue by calendar year</figcaption>
+      </figure>
       <div class="insight-block">
         <div class="bq-label">Business Question</div>
         <div class="bq-text">What are total online sales and how do they compare with the previous year?</div>
-        <div class="insight-card">
-          <div class="i-title">Insight</div>
-          <div class="i-body">Year-over-year revenue analysis provides a high-level view of business growth and is often one of the first metrics reviewed by management teams.</div>
-        </div>
+<div class="insight-card">
+<div class="i-title">Key Findings</div>
+<div class="i-body">
+<ul>
+<li>2013 generated $16.35 million in online revenue.</li>
+<li>2014 recorded significantly lower revenue at $45,695.</li>
+<li>The query output shows substantially higher recorded revenue in 2013 than 2014 for the selected date range.</li>
+</ul>
+</div>
+</div>
       </div>
     </section>
 
@@ -223,12 +252,42 @@
         Revenue was analysed by product category to identify the company's strongest revenue
         generators.
       </p>
+      <pre><span class="cm">-- Which product categories are generating the highest revenue, and which ones are underperforming?</span>
+
+WITH CategorySales AS
+    (SELECT pc.EnglishProductCategoryName,
+    SUM(s.SalesAmount) As 'Revenue'
+    FROM dbo.FactInternetSales s
+    JOIN DimProduct p ON s.ProductKey = p.ProductKey
+    JOIN DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+    JOIN DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+    GROUP BY pc.EnglishProductCategoryName
+    )
+
+SELECT EnglishProductCategoryName,
+    Revenue,
+
+    Revenue * 100 / SUM(Revenue) OVER () AS 'Percent_of_Total',
+    RANK() OVER (ORDER BY Revenue DESC) AS 'Revenue_Rank'
+
+FROM CategorySales
+ORDER BY Revenue DESC;</pre>
+      <figure class="query-figure">
+        <img src="../assets/images/adventureworks/category-performance-query.png" alt="SQL query and result set ranking product categories by revenue" loading="lazy">
+        <figcaption>Query result — revenue and rank by product category</figcaption>
+      </figure>
       <div class="insight-block">
-        <div class="insight-card">
-          <div class="i-title">Business Insight</div>
-          <div class="i-body">Understanding which product categories contribute most to total revenue supports inventory planning, marketing investment, and pricing strategies.</div>
-        </div>
-      </div>
+<div class="insight-card">
+<div class="i-title">Key Findings</div>
+<div class="i-body">
+<ul>
+<li>Bikes generated 96.46% of total revenue, making them the dominant product category.</li>
+<li>Accessories contributed 2.39% of revenue and ranked second.</li>
+<li>Clothing represented just 1.16% of revenue, indicating a relatively minor contribution to overall sales.</li>
+</ul>
+</div>
+</div>
+</div>
     </section>
 
     <!-- 5 -->
@@ -243,12 +302,103 @@
         <span class="seg-chip">Lifecycle Stage</span>
         <span class="seg-chip">Value Tier</span>
       </div>
+      <pre><span class="cm">-- Which customer segments contribute the most revenue, based on age, purchase frequency, and recency?</span>
+
+WITH CustomerBase AS (
+    SELECT
+        c.CustomerKey,
+        c.BirthDate,
+        c.Gender,
+        c.YearlyIncome,
+        c.TotalChildren,
+        c.NumberChildrenAtHome,
+
+        <span class="cm">-- Calculate age</span>
+        Age = DATEDIFF(year, c.BirthDate, GETDATE())
+              - CASE
+                    WHEN DATEADD(year, DATEDIFF(year, c.BirthDate, GETDATE()), c.BirthDate) > GETDATE()
+                    THEN 1 ELSE 0
+                END
+    FROM DimCustomer c
+),
+
+SalesAgg AS (
+    SELECT
+        s.CustomerKey,
+        SUM(s.SalesAmount) AS TotalRevenue,
+        COUNT(*) AS OrderCount,
+        MAX(d.FullDateAlternateKey) AS LastPurchaseDate
+    FROM FactInternetSales s
+    INNER JOIN DimDate d ON s.OrderDateKey = d.DateKey
+    GROUP BY s.CustomerKey
+),
+
+Combined AS (
+    SELECT
+        b.CustomerKey,
+        b.Age,
+        s.TotalRevenue,
+        s.OrderCount,
+        s.LastPurchaseDate,
+
+        <span class="cm">-- Age Group</span>
+        CASE
+            WHEN b.Age BETWEEN 18 AND 24 THEN '18–24'
+            WHEN b.Age BETWEEN 25 AND 34 THEN '25–34'
+            WHEN b.Age BETWEEN 35 AND 44 THEN '35–44'
+            WHEN b.Age BETWEEN 45 AND 54 THEN '45–54'
+            ELSE '55+'
+        END AS AgeGroup,
+
+        <span class="cm">-- Behaviour (Frequency)</span>
+        CASE
+            WHEN s.OrderCount >= 10 THEN 'Frequent'
+            WHEN s.OrderCount BETWEEN 3 AND 9 THEN 'Occasional'
+            ELSE 'Rare'
+        END AS FrequencyGroup,
+
+        <span class="cm">-- Lifecycle (Recency)</span>
+        CASE
+            WHEN s.LastPurchaseDate >= DATEADD(month, -1, GETDATE()) THEN 'Active'
+            WHEN s.LastPurchaseDate >= DATEADD(month, -6, GETDATE()) THEN 'At Risk'
+            ELSE 'Dormant'
+        END AS LifecycleStage
+    FROM CustomerBase b
+    LEFT JOIN SalesAgg s ON b.CustomerKey = s.CustomerKey
+),
+
+FinalSegments AS (
+    SELECT
+        CustomerKey,
+        TotalRevenue,
+        CONCAT(FrequencyGroup, ' / ', LifecycleStage) AS CustomerSegment
+    FROM Combined
+)
+
+SELECT
+    CustomerSegment,
+    SUM(TotalRevenue) AS SegmentRevenue,
+    ROUND(100.0 * SUM(TotalRevenue) / SUM(SUM(TotalRevenue)) OVER(), 2) AS ContributionPercent
+FROM FinalSegments
+GROUP BY CustomerSegment
+ORDER BY SegmentRevenue DESC;</pre>
+      <figure class="query-figure">
+        <img src="../assets/images/adventureworks/customer-segmentation-query.png" alt="SQL query and result set segmenting customers by age, frequency, and recency" loading="lazy">
+        <figcaption>Query result — revenue contribution by customer segment</figcaption>
+      </figure>
       <div class="insight-block">
-        <div class="insight-card">
-          <div class="i-title">Business Insight</div>
-          <div class="i-body">Identifying high-value customer segments enables targeted retention and marketing initiatives.</div>
-        </div>
-      </div>
+<div class="insight-card">
+<div class="i-title">Key Findings</div>
+<div class="i-body">
+<ul>
+<li>Occasional / Dormant customers generated 76.96% of total revenue.</li>
+<li>Rare / Dormant customers contributed 20.08% of revenue.</li>
+<li>Frequent / Dormant customers accounted for only 2.96%, suggesting the customer base is dominated by low-frequency purchasers.</li>
+</ul>
+</div>
+</div>
+</div>
+
     </section>
 
     <!-- 6 -->
@@ -257,12 +407,38 @@
       <p>
         Revenue was analysed by geographic region to identify the strongest performing markets.
       </p>
+      <pre><span class="cm">-- What regions are driving the strongest sales performance?</span>
+
+  SELECT
+        g.EnglishCountryRegionName,
+    FORMAT(SUM(s.SalesAmount), 'C0', 'en-US') As 'Revenue',
+
+        SUM(s.SalesAmount) * 100
+        /SUM(SUM(s.SalesAmount)) OVER () AS 'Percent_Of_Total',
+
+        RANK () OVER (ORDER BY SUM(s.SalesAmount) DESC) AS 'Revenue_Rank'
+
+    FROM dbo.FactInternetSales s
+    JOIN DimGeography g ON s.SalesTerritoryKey = g.SalesTerritoryKey
+    GROUP BY g.EnglishCountryRegionName
+    ORDER BY SUM(s.SalesAmount) DESC;</pre>
+      <figure class="query-figure">
+        <img src="../assets/images/adventureworks/geographic-performance-query.png" alt="SQL query and result set ranking countries by sales revenue" loading="lazy">
+        <figcaption>Query result — revenue and rank by country</figcaption>
+      </figure>
       <div class="insight-block">
-        <div class="insight-card">
-          <div class="i-title">Business Insight</div>
-          <div class="i-body">Regional analysis highlights which markets are performing well and where growth opportunities may exist.</div>
-        </div>
-      </div>
+<div class="insight-card">
+<div class="i-title">Key Findings</div>
+<div class="i-body">
+<ul>
+<li>The United States was the largest market, generating 50.71% of total sales revenue.</li>
+<li>Australia ranked second with 17.84% of revenue.</li>
+<li>Germany and the United Kingdom each contributed approximately 9% of total sales, highlighting the concentration of revenue in a small number of key markets.</li>
+</ul>
+</div>
+</div>
+</div>
+
     </section>
 
     <!-- 7 -->
@@ -271,12 +447,50 @@
       <p>
         Customer retention was analysed by comparing repeat purchasers with one-time buyers.
       </p>
+      <pre><span class="cm">-- What percentage of our total revenue comes from repeat customers?</span>
+
+WITH CustomerOrders AS (
+    SELECT
+        c.CustomerKey,
+        COUNT(s.OrderDate) AS OrderCount,
+        SUM(s.SalesAmount) AS Revenue
+    FROM FactInternetSales s
+    JOIN DimCustomer c ON s.CustomerKey = c.CustomerKey
+    GROUP BY c.CustomerKey
+)
+SELECT
+    CASE
+        WHEN OrderCount > 1 THEN 'Repeat_Customer'
+        ELSE 'SinglePurchase'
+    END AS 'Status',
+    FORMAT(SUM(Revenue), 'C0', 'en-US') AS Revenue,
+
+    SUM(Revenue) * 100
+    /SUM(SUM(Revenue)) OVER () AS 'Percent_Of_Total'
+
+FROM CustomerOrders
+GROUP BY
+    CASE
+        WHEN OrderCount > 1 THEN 'Repeat_Customer'
+        ELSE 'SinglePurchase'
+    END;</pre>
+      <figure class="query-figure">
+        <img src="../assets/images/adventureworks/repeat-customer-query.png" alt="SQL query and result set showing revenue split between repeat and single-purchase customers" loading="lazy">
+        <figcaption>Query result — revenue share, repeat vs. single-purchase customers</figcaption>
+      </figure>
       <div class="insight-block">
-        <div class="insight-card">
-          <div class="i-title">Business Insight</div>
-          <div class="i-body">A high percentage of repeat customer revenue is often a sign of customer satisfaction and long-term business sustainability.</div>
-        </div>
-      </div>
+<div class="insight-card">
+<div class="i-title">Key Findings</div>
+<div class="i-body">
+<ul>
+<li>Repeat customers generated 93.41% of total revenue.</li>
+<li>Single-purchase customers contributed only 6.59% of revenue.</li>
+<li>The results indicate that customer retention is a major driver of sales performance within the AdventureWorks dataset.</li>
+</ul>
+</div>
+</div>
+</div>
+
     </section>
 
     <!-- 8 -->
@@ -295,10 +509,10 @@
     <section class="case-section" id="summary">
       <h2><span class="step-num">09</span> Project Summary</h2>
       <p>
-        This project demonstrates how SQL can be used to answer real business questions using
-        Microsoft's AdventureWorks data warehouse. The analysis explored sales performance,
-        customer behaviour, product performance, regional trends, and customer retention,
-        providing insights that could support operational and strategic decision-making.
+This project demonstrates the use of SQL Server, CTEs, window functions, aggregations, and business-focused analysis techniques to answer key commercial questions using the AdventureWorks Data Warehouse. 
+The analysis identified Bikes as the dominant product category, contributing 96.46% of total revenue, while the United States generated 50.71% of overall sales. 
+Customer analysis showed that repeat customers accounted for 93.41% of revenue, highlighting the importance of customer retention. 
+These findings demonstrate how SQL can be used to transform raw transactional data into actionable business insights that support operational and strategic decision-making.
       </p>
     </section>
 
